@@ -12,39 +12,39 @@ import type { CollectionAfterChangeHook } from 'payload';
  * Supports decimals for 'Kg' unit of measures.
  */
 const updateStock = async (payload: any, produitId: string | number, emplacementId: string | number, quantiteChangement: number) => {
-  const pid = isNaN(Number(produitId)) ? produitId : Number(produitId);
-  const eid = isNaN(Number(emplacementId)) ? emplacementId : Number(emplacementId);
+  const pid = String(produitId);
+  const eid = String(emplacementId);
 
-  // 1. Find existing stock record for this Product + Location combination
+  console.log(`[STOCKS] Action: ${quantiteChangement} for Prod:${pid} at Emp:${eid}`);
+
   const stockResult = await payload.find({
     collection: 'stocks',
     where: {
       and: [
-        { produit_id: { equals: pid } },
-        { emplacement_id: { equals: eid } },
+        { produit_id: { equals: isNaN(Number(pid)) ? pid : Number(pid) } },
+        { emplacement_id: { equals: isNaN(Number(eid)) ? eid : Number(eid) } },
       ],
     },
   });
 
   if (stockResult.totalDocs > 0) {
-    // 2. Update existing stock (adding or subtracting based on quantiteChangement)
     const stock = stockResult.docs[0];
-    const newQuantity = Number(stock.quantite_disponible) + Number(quantiteChangement);
+    const oldQty = Number(stock.quantite_disponible);
+    const newQuantity = oldQty + Number(quantiteChangement);
+    console.log(`[STOCKS] Updating existing: ${oldQty} -> ${newQuantity}`);
 
     await payload.update({
       collection: 'stocks',
       id: stock.id,
-      data: {
-        quantite_disponible: parseFloat(newQuantity.toFixed(3)), // Handle float precision for Kg
-      },
+      data: { quantite_disponible: parseFloat(newQuantity.toFixed(3)) },
     });
   } else {
-    // 3. Create new stock record if it doesn't exist
+    console.log(`[STOCKS] Record not found. Creating new for Prod:${pid} at Emp:${eid} with qty:${quantiteChangement}`);
     await payload.create({
       collection: 'stocks',
       data: {
-        produit_id: pid,
-        emplacement_id: eid,
+        produit_id: isNaN(Number(pid)) ? pid : Number(pid),
+        emplacement_id: isNaN(Number(eid)) ? eid : Number(eid),
         quantite_disponible: parseFloat(Number(quantiteChangement).toFixed(3)),
       },
     });
@@ -83,38 +83,35 @@ const handleStockMovement: CollectionAfterChangeHook = async ({ doc, req, operat
 const handleBLStock: CollectionAfterChangeHook = async ({ doc, req, operation }) => {
   if (operation === 'create' && doc.type_document === 'Vente') {
     const num = String(doc.numero_bl || '');
-    console.log('--- CRITICAL STOCK HOOK ---');
-    console.log('BL Number:', num);
+    console.log('>>> TRANSACTION VENTE DÉBUT <<<');
+    console.log('B.L. Numéro:', num);
 
-    // DETERMINATION FORCEE
-    let targetType = 'Depot';
+    // 1. DÉTECTION DE LA SOURCE (Dépôt par défaut)
+    // Nous utilisons les IDs fixes pour éviter tout problème de recherche :
+    // Depot = ID 1 | Magasin = ID 2
+    let targetId: string | number = 1; 
+    let label = 'DEPOT';
+
     if (num.toUpperCase().includes('MAGASIN')) {
-       targetType = 'Magasin';
-       console.log('FORCE DETECTED: MAGASIN');
+       targetId = 2;
+       label = 'MAGASIN';
+       console.log('>>> SOURCE DÉTECTÉE : MAGASIN (Forcée ID 2)');
     } else {
-       console.log('DEFAULT: DEPOT');
+       targetId = 1;
+       label = 'DEPOT (Forcée ID 1)';
+       console.log('>>> SOURCE DÉTECTÉE : DEPOT (Forcée ID 1)');
     }
 
-    // GET LOCATION ID
-    const emps = await req.payload.find({
-      collection: 'emplacements',
-      where: { type_emplacement: { equals: targetType } }
-    });
-
-    if (emps.totalDocs > 0) {
-      const locId = emps.docs[0].id;
-      console.log(`Using Location ID ${locId} (${targetType})`);
-
-      for (const ligne of (doc.lignes || [])) {
+    if (doc.lignes && doc.lignes.length > 0) {
+      console.log(`>>> APPLICATION SUR EMPLACEMENT: ${label}`);
+      for (const ligne of doc.lignes) {
         const pId = typeof ligne.produit_id === 'object' ? ligne.produit_id.id : ligne.produit_id;
         const q = Number(ligne.quantite);
-        console.log(`Update Product ${pId}: -${q} at Location ${locId}`);
-        await updateStock(req.payload, pId, locId, -q);
+        console.log(`>>> DÉDUCTION : Produit ${pId} | Qté: ${q}`);
+        await updateStock(req.payload, pId, targetId, -q);
       }
-    } else {
-      console.log('ERROR: Location type not found in DB:', targetType);
     }
-    console.log('--- END CRITICAL HOOK ---');
+    console.log('>>> TRANSACTION VENTE FIN <<<');
   }
   return doc;
 };
@@ -231,7 +228,7 @@ export default buildConfig({
     {
       slug: 'emplacements',
       labels: { singular: 'Emplacement', plural: 'Emplacements' },
-      access: { read: () => true, create: () => true },
+      access: { read: () => true, create: () => true, update: () => true },
       fields: [
         { name: 'nom_emplacement', type: 'text', required: true },
         {

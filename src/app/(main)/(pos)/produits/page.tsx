@@ -241,8 +241,8 @@ export default function ProduitsPage() {
                 <thead>
                   <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
                     <th style={{ padding: '1rem' }}>Désignation (FR / AR)</th>
-                    <th style={{ padding: '1rem' }}>🏠 Dépot</th>
                     <th style={{ padding: '1rem' }}>🛒 Magasin</th>
+                    <th style={{ padding: '1rem' }}>🏠 Dépot</th>
                     <th style={{ padding: '1rem' }}>Prix Achat</th>
                     <th style={{ padding: '1rem' }}>Prix Vente</th>
                     <th style={{ padding: '1rem' }}>Actions</th>
@@ -260,13 +260,13 @@ export default function ProduitsPage() {
                             {p.nom_produit_ar && <div style={{ color: '#10b981', direction: 'rtl' }}>{p.nom_produit_ar}</div>}
                           </td>
                           <td style={{ padding: '1rem' }}>
-                            <span style={{ padding: '0.3rem 0.6rem', borderRadius: '0.4rem', background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', fontWeight: 'bold' }}>
-                              {getStocksForProduct(p.id).depot.toFixed(2)} {p.unite_mesure}
+                            <span style={{ padding: '0.3rem 0.6rem', borderRadius: '0.4rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', fontWeight: 'bold' }}>
+                              {getStocksForProduct(p.id).magasin.toFixed(2)} {p.unite_mesure}
                             </span>
                           </td>
                           <td style={{ padding: '1rem' }}>
-                            <span style={{ padding: '0.3rem 0.6rem', borderRadius: '0.4rem', background: 'rgba(59, 130, 246, 0.2)', color: '#60a5fa', fontWeight: 'bold' }}>
-                              {getStocksForProduct(p.id).magasin.toFixed(2)} {p.unite_mesure}
+                            <span style={{ padding: '0.3rem 0.6rem', borderRadius: '0.4rem', background: 'rgba(245, 158, 11, 0.2)', color: '#f59e0b', fontWeight: 'bold' }}>
+                              {getStocksForProduct(p.id).depot.toFixed(2)} {p.unite_mesure}
                             </span>
                           </td>
                           <td style={{ padding: '1rem', color: 'var(--text-muted)' }}>{p.prix_achat?.toFixed(3)} TND</td>

@@ -175,8 +175,8 @@ export default function StocksPage() {
               <thead>
                 <tr style={{ borderBottom: '1px solid var(--glass-border)' }}>
                   <th style={{ padding: '1rem' }}>Produit</th>
-                  <th style={{ padding: '1rem' }}>🏠 Dépot (Kg)</th>
                   <th style={{ padding: '1rem' }}>🛒 Magasin (Kg)</th>
+                  <th style={{ padding: '1rem' }}>🏠 Dépot (Kg)</th>
                   <th style={{ padding: '1rem' }}>Actions</th>
                 </tr>
               </thead>
@@ -188,20 +188,20 @@ export default function StocksPage() {
                       <div style={{fontSize: '12px', color: '#10b981'}}>{g.nomAr}</div>
                     </td>
                     <td style={{ padding: '1rem' }}>
-                      {editingStock?.prodId === g.id && editingStock.type === 'Depot' ? (
-                        <input type="number" value={editQty} onChange={e => setEditQty(e.target.value)} className="input" style={{width: '80px'}} autoFocus />
-                      ) : (
-                        <span style={{color: '#f59e0b', fontWeight: 'bold'}}>
-                          {g.depot.quantite_disponible.toFixed(2)}
-                        </span>
-                      )}
-                    </td>
-                    <td style={{ padding: '1rem' }}>
                       {editingStock?.prodId === g.id && editingStock.type === 'Magasin' ? (
                         <input type="number" value={editQty} onChange={e => setEditQty(e.target.value)} className="input" style={{width: '80px'}} autoFocus />
                       ) : (
                         <span style={{color: '#60a5fa', fontWeight: 'bold'}}>
                           {g.magasin.quantite_disponible.toFixed(2)}
+                        </span>
+                      )}
+                    </td>
+                    <td style={{ padding: '1rem' }}>
+                      {editingStock?.prodId === g.id && editingStock.type === 'Depot' ? (
+                        <input type="number" value={editQty} onChange={e => setEditQty(e.target.value)} className="input" style={{width: '80px'}} autoFocus />
+                      ) : (
+                        <span style={{color: '#f59e0b', fontWeight: 'bold'}}>
+                          {g.depot.quantite_disponible.toFixed(2)}
                         </span>
                       )}
                     </td>
