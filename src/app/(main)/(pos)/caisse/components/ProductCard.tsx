@@ -57,6 +57,14 @@ export default function ProductCard({ produit, onAdd }: ProductCardProps) {
         )}
       </div>
 
+      {/* Price */}
+      <div>
+        <p className="product-card-price">
+          {produit.prix_vente_gros?.toFixed(3)}
+          <span className="product-card-unit"> TND/{produit.unite_mesure}</span>
+        </p>
+      </div>
+
       {/* Stock status */}
       {produit.stock_disponible !== undefined && (
         <span

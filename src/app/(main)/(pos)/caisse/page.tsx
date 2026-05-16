@@ -46,17 +46,7 @@ export default function POSPage() {
         });
         if (!res.ok) throw new Error('API unreachable');
         const data = await res.json();
-        const rawProducts = data.docs || [];
-        const uniqueProducts = [];
-        const seenNames = new Set();
-        for (const p of rawProducts) {
-          const name = p.nom_produit?.toLowerCase().trim();
-          if (!seenNames.has(name)) {
-            seenNames.add(name);
-            uniqueProducts.push(p);
-          }
-        }
-        setProduits(uniqueProducts);
+        setProduits(data.docs || []);
       } catch (err: unknown) {
         if (err instanceof Error && err.name !== 'AbortError') {
           console.error('Failed to fetch produits:', err.message);
