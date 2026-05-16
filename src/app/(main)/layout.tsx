@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import AuthWrapper from './AuthWrapper';
 
 export const metadata: Metadata = {
   title: 'SAAD Distribution — ERP Volailles',
@@ -19,7 +20,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
       </head>
-      <body>{children}</body>
+      <body>
+        <AuthWrapper>{children}</AuthWrapper>
+      </body>
     </html>
   );
 }
