@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bon de Livraison</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 15mm;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #2c3e50;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 3px solid #2980b9;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .company-info h1 {
+            margin: 0;
+            color: #2980b9;
+            font-size: 28px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .company-info p {
+            margin: 5px 0 0;
+            color: #7f8c8d;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .document-info {
+            text-align: right;
+        }
+
+        .document-info h2 {
+            margin: 0;
+            color: #34495e;
+            font-size: 26px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .document-info .doc-meta {
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .document-info p {
+            margin: 2px 0;
+        }
+
+        .client-section {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .client-box {
+            border: 1px solid #bdc3c7;
+            padding: 20px;
+            border-radius: 8px;
+            width: 45%;
+            background-color: #fcfcfc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+        }
+
+        .client-box h3 {
+            margin-top: 0;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 8px;
+            font-size: 16px;
+            color: #2980b9;
+            text-transform: uppercase;
+        }
+
+        .client-box p {
+            margin: 6px 0;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th {
+            background-color: #2980b9;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        td {
+            border-bottom: 1px solid #ecf0f1;
+            padding: 12px;
+            font-size: 13px;
+            color: #34495e;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .totals-section {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .totals-box {
+            width: 320px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #bdc3c7;
+        }
+
+        .totals-box table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0;
+        }
+
+        .totals-box th,
+        .totals-box td {
+            padding: 8px 12px;
+            text-align: right;
+            border-bottom: 1px solid #ecf0f1;
+            font-size: 14px;
+        }
+
+        .totals-box .total-row {
+            font-weight: bold;
+            font-size: 18px;
+            color: #2980b9;
+        }
+
+        .totals-box .total-row td {
+            border-top: 2px solid #2980b9;
+            border-bottom: none;
+            padding-top: 15px;
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            border-top: 1px solid #bdc3c7;
+            padding-top: 15px;
+            font-size: 11px;
+            color: #95a5a6;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="company-info">
+            <h1>SAAD Distribution</h1>
+            <p><strong>Spécialiste de la Volailles</strong><br>
+                Zone Industrielle, Route de Tunis<br>
+                Tél : +216 71 123 456<br>
+                Matricule Fiscal : 1234567X/A/M/000</p>
+        </div>
+        <div class="document-info">
+            <h2>Bon de Livraison</h2>
+            <div class="doc-meta">
+                <p><strong>N° :</strong> {{numero_bl}}</p>
+                <p><strong>Date :</strong> {{date_bl}}</p>
+                <p><strong>Statut :</strong> {{statut}}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="client-section">
+        <div class="client-box">
+            <h3>Informations Client</h3>
+            <p><strong>{{client_nom}}</strong></p>
+            <p>Tél : {{client_tel}}</p>
+            <p>Adresse : {{client_adresse}}</p>
+            <p>M.F : {{client_mf}}</p>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Désignation</th>
+                <th class="text-right">Poids Brut (Kg)</th>
+                <th class="text-right">Tare (Kg)</th>
+                <th class="text-right">Poids Net (Kg)</th>
+                <th class="text-right">Prix Unitaire</th>
+                <th class="text-right">Total HT</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{lignes_html}}
+        </tbody>
+    </table>
+
+    <div class="totals-section">
+        <div class="totals-box">
+            <table>
+                <tr>
+                    <td>Total Poids Net :</td>
+                    <td><strong>{{total_net}} Kg</strong></td>
+                </tr>
+                <tr>
+                    <td>Total HT :</td>
+                    <td>{{total_ht}} TND</td>
+                </tr>
+                <tr>
+                    <td>TVA (19%) :</td>
+                    <td>{{total_tva}} TND</td>
+                </tr>
+                <tr class="total-row">
+                    <td>Total TTC :</td>
+                    <td>{{total_ttc}} TND</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="footer">
+        SAAD Distribution - Logiciel ERP - Document généré automatiquement.<br>
+        Signature Client : _______________________
+    </div>
+</body>
+
+</html>

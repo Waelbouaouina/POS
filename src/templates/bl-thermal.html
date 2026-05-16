@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket de Caisse</title>
+    <style>
+        @page { size: 80mm 297mm; margin: 0; }
+        body { font-family: 'Courier New', Courier, monospace; color: #000; margin: 0; padding: 5mm; font-size: 12px; line-height: 1.2; width: 70mm; }
+        .center { text-align: center; }
+        .right { text-align: right; }
+        .bold { font-weight: bold; }
+        .divider { border-bottom: 1px dashed #000; margin: 5px 0; }
+        .header h1 { font-size: 18px; margin: 0 0 5px 0; text-transform: uppercase; }
+        .header p { margin: 2px 0; font-size: 11px; }
+        .meta-info { margin: 10px 0; font-size: 11px; }
+        .meta-info p { margin: 2px 0; }
+        .item-row { display: flex; justify-content: space-between; margin-bottom: 2px; font-size: 11px; }
+        .item-name { font-weight: bold; margin-bottom: 2px; font-size: 11px; }
+        .item-details { display: flex; justify-content: space-between; font-size: 10px; color: #333; margin-bottom: 5px; padding-left: 5px; }
+        .totals { margin-top: 10px; font-size: 11px; }
+        .total-line { display: flex; justify-content: space-between; font-size: 15px; margin-top: 8px; font-weight: bold; border-top: 1px solid #000; padding-top: 5px; }
+        .footer { margin-top: 15px; font-size: 10px; }
+    </style>
+</head>
+<body>
+    <div class="header center">
+        <h1>SAAD Distribution</h1>
+        <p>Spécialiste de la Volailles</p>
+        <p>Tel: +216 71 123 456</p>
+        <p>M.F: 1234567X/A/M/000</p>
+    </div>
+    <div class="divider"></div>
+    <div class="meta-info">
+        <p><strong>BL N° :</strong> {{numero_bl}}</p>
+        <p><strong>Date :</strong> {{date_bl}}</p>
+        <p><strong>Client :</strong> {{client_nom}}</p>
+    </div>
+    <div class="divider"></div>
+    
+    <div>
+        <!-- Lignes will be injected here. Example structure:
+        <div class="item">
+            <div class="item-name">Poulet Entier</div>
+            <div class="item-details">
+                <span>15.2 Kg x 6.500</span>
+                <span>98.800 TND</span>
+            </div>
+        </div>
+        -->
+        {{lignes_html_thermal}}
+    </div>
+
+    <div class="divider"></div>
+    <div class="totals">
+        <div class="item-row"><span>Total Poids Net:</span> <span>{{total_net}} Kg</span></div>
+        <div class="item-row"><span>Total HT:</span> <span>{{total_ht}} TND</span></div>
+        <div class="item-row"><span>TVA (19%):</span> <span>{{total_tva}} TND</span></div>
+        <div class="total-line"><span>TOTAL TTC:</span> <span>{{total_ttc}} TND</span></div>
+    </div>
+    
+    <div class="divider"></div>
+    <div class="footer center">
+        <p>Merci de votre confiance !</p>
+        <p>***</p>
+    </div>
+</body>
+</html>

@@ -1,10 +1,25 @@
-FROM node:18-alpine
-
+# ── Stage 1: Build ──────────────────────────────
+FROM node:18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
+RUN npm run build
 
-CMD ["npm", "run", "dev"]
+# ── Stage 2: Production Runner ───────────────────
+FROM node:18-alpine AS runner
+WORKDIR /app
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/src/templates ./src/templates
+
+EXPOSE 3000
+CMD ["node", "server.js"]
+
