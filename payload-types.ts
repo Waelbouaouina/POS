@@ -249,6 +249,10 @@ export interface BonsDeLivraison {
   id: number;
   numero_bl: string;
   tier_id: number | Tier;
+  /**
+   * Emplacement d'où la marchandise est prélevée
+   */
+  source_emplacement?: ('Depot' | 'Magasin') | null;
   type_document: 'Achat' | 'Vente';
   statut?: ('Brouillon' | 'Livre' | 'Facture') | null;
   montant_total_bl?: number | null;
@@ -527,6 +531,7 @@ export interface MouvementsStockSelect<T extends boolean = true> {
 export interface BonsDeLivraisonSelect<T extends boolean = true> {
   numero_bl?: T;
   tier_id?: T;
+  source_emplacement?: T;
   type_document?: T;
   statut?: T;
   montant_total_bl?: T;

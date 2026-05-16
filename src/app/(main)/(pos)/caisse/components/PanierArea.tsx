@@ -250,13 +250,13 @@ export default function PanierArea({
             onClick={() => setSourceStock('Depot')}
             style={{ flex: 1, padding: '8px', borderRadius: '5px', border: '1px solid ' + (sourceStock === 'Depot' ? '#f59e0b' : 'var(--glass-border)'), background: sourceStock === 'Depot' ? 'rgba(245, 158, 11, 0.2)' : 'transparent', color: sourceStock === 'Depot' ? '#f59e0b' : 'white', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
           >
-            🏠 Magasin
+            🏠 Dépot
           </button>
           <button 
             onClick={() => setSourceStock('Magasin')}
             style={{ flex: 1, padding: '8px', borderRadius: '5px', border: '1px solid ' + (sourceStock === 'Magasin' ? '#3b82f6' : 'var(--glass-border)'), background: sourceStock === 'Magasin' ? 'rgba(59, 130, 246, 0.2)' : 'transparent', color: sourceStock === 'Magasin' ? '#3b82f6' : 'white', cursor: 'pointer', fontSize: '12px', fontWeight: 'bold' }}
           >
-            🛒 Dépot
+            🛒 Magasin
           </button>
         </div>
       </div>
