@@ -42,7 +42,7 @@ export default function PanierArea({
   const [clients, setClients] = useState<Tier[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedClientId, setSelectedClientId] = useState('');
-  const [sourceStock, setSourceStock] = useState<'Depot' | 'Magasin'>('Magasin');
+  const [sourceStock, setSourceStock] = useState<'Depot' | 'Magasin'>('Depot');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [mounted, setMounted] = useState(false);

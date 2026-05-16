@@ -87,12 +87,12 @@ const handleBLStock: CollectionAfterChangeHook = async ({ doc, req, operation })
     console.log('BL Number:', num);
 
     // DETERMINATION FORCEE
-    let targetType = 'Magasin';
-    if (num.toUpperCase().includes('DEPOT')) {
-       targetType = 'Depot';
-       console.log('FORCE DETECTED: DEPOT');
+    let targetType = 'Depot';
+    if (num.toUpperCase().includes('MAGASIN')) {
+       targetType = 'Magasin';
+       console.log('FORCE DETECTED: MAGASIN');
     } else {
-       console.log('DEFAULT: MAGASIN');
+       console.log('DEFAULT: DEPOT');
     }
 
     // GET LOCATION ID
